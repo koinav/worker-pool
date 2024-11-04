@@ -39,7 +39,7 @@ func (p *WorkerPool) Submit(task string) error {
 	p.mu.Lock()
 	defer p.mu.Unlock()
 	if p.isClosed {
-		return fmt.Errorf("невозможно добавить задачу, пул воркеров закрыт")
+		return fmt.Errorf("пул воркеров закрыт")
 	}
 	p.tasks <- task
 	return nil
@@ -80,7 +80,7 @@ func (p *WorkerPool) AddWorker() error {
 	defer p.mu.Unlock()
 
 	if p.isClosed {
-		return fmt.Errorf("невозможно добавить воркера: пул воркеров закрыт")
+		return fmt.Errorf("пул воркеров закрыт")
 	}
 
 	p.workerID++
@@ -92,7 +92,7 @@ func (p *WorkerPool) AddWorker() error {
 }
 
 // RemoveWorker удаляет последнего добавленного воркера из пула
-// Если воркер занят выполнением задачи, он завершит ее перед остановкой
+// Если вокеер занят выполнением задачи, он завершит ее перед остановкой
 func (p *WorkerPool) RemoveWorker() error {
 	p.mu.Lock()
 	defer p.mu.Unlock()
